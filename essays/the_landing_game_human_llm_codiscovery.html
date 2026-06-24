@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#05070d" />
+<title>The Landing Game · Human–LLM Co-Discovery Protocol</title>
+<style>
+:root{color-scheme:dark;--bg:#05070d;--bg2:#0b1020;--panel:#101827;--panel2:#0d1424;--ink:#f7fbff;--soft:#d8e6f3;--muted:#93a4b7;--line:rgba(216,230,243,.18);--accent:#9ee7ff;--gold:#f7d06a;--green:#9ff0c8;--red:#ff9e9e;--shadow:rgba(0,0,0,.46)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100svh;color:var(--ink);background:radial-gradient(circle at 16% -10%,rgba(158,231,255,.18),transparent 24rem),radial-gradient(circle at 92% 4%,rgba(247,208,106,.13),transparent 22rem),radial-gradient(circle at 45% 110%,rgba(159,240,200,.09),transparent 24rem),linear-gradient(180deg,var(--bg),var(--bg2) 58%,#05070b);font-family:ui-serif,Georgia,"Times New Roman",serif;line-height:1.68;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}.wrap{width:min(92vw,980px);margin:0 auto;padding:34px 0 82px}header{min-height:70svh;display:grid;align-items:end;padding:28px 0}.eyebrow{font:800 .72rem/1.2 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.25em;color:var(--muted);margin:0 0 18px}h1{font-size:clamp(3.3rem,15vw,8.7rem);line-height:.83;letter-spacing:-.08em;font-weight:520;margin:0;text-shadow:0 0 38px rgba(158,231,255,.1)}.subtitle{font-size:clamp(1.15rem,5vw,1.85rem);line-height:1.32;color:var(--soft);max-width:790px;margin:24px 0 0;font-style:italic}.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:28px 0}.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font:800 .72rem/1 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.12em;background:rgba(255,255,255,.045)}section{margin:54px 0}.panel{border:1px solid var(--line);border-radius:30px;background:linear-gradient(180deg,rgba(255,255,255,.073),rgba(255,255,255,.028));box-shadow:0 22px 70px var(--shadow);padding:clamp(20px,5vw,38px);margin:22px 0}h2{font-size:clamp(2.05rem,8vw,4.2rem);line-height:.95;letter-spacing:-.06em;margin:0 0 18px;font-weight:520}h3{font-size:clamp(1.35rem,5vw,2.15rem);line-height:1.08;letter-spacing:-.045em;margin:34px 0 12px;font-weight:560}p{font-size:clamp(1.05rem,4.5vw,1.25rem);margin:17px 0;color:var(--soft)}strong{color:#fff}.lead{font-size:clamp(1.25rem,5.5vw,1.65rem);line-height:1.38;color:#fff}.small{font:650 .88rem/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}.callout{border-left:3px solid var(--accent);padding:14px 0 14px 18px;margin:24px 0;color:#fff}.callout p{margin:0;color:#fff}.grid{display:grid;grid-template-columns:1fr;gap:14px}.card{border:1px solid var(--line);border-radius:24px;background:rgba(255,255,255,.045);padding:18px}.card b{display:block;font:850 .83rem/1.2 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:8px}.card p{margin:0;font-size:1.02rem}.steps{counter-reset:step;display:grid;gap:14px}.step{counter-increment:step;border:1px solid var(--line);border-radius:24px;background:rgba(255,255,255,.045);padding:18px}.step:before{content:counter(step);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid rgba(158,231,255,.35);background:rgba(158,231,255,.09);color:var(--accent);font:900 .88rem/1 ui-sans-serif,system-ui,sans-serif;margin-bottom:12px}.step h4{font-size:1.2rem;line-height:1.18;letter-spacing:-.03em;margin:0 0 8px}.step p{margin:0;font-size:1rem}.script{white-space:pre-wrap;border:1px solid rgba(158,231,255,.28);border-radius:24px;background:rgba(5,8,15,.64);padding:18px;color:#eaf8ff;font:600 .92rem/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:auto}.score{display:grid;gap:10px}.score div{border:1px solid var(--line);border-radius:20px;padding:14px;background:rgba(255,255,255,.04)}.score span{font:900 .72rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--gold)}table{width:100%;border-collapse:collapse;margin:20px 0;border:1px solid var(--line);border-radius:18px;overflow:hidden;display:block}tbody{display:block}tr{display:grid;grid-template-columns:1fr;border-bottom:1px solid var(--line)}tr:last-child{border-bottom:0}td,th{padding:13px 14px;text-align:left;vertical-align:top}th{font:850 .72rem/1.2 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);background:rgba(158,231,255,.08)}td{color:var(--soft);font-size:.98rem}.tag{color:var(--gold)}footer{padding-top:52px;text-align:center;color:var(--muted);font:650 .82rem/1.5 ui-sans-serif,system-ui,sans-serif}@media(min-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}tr{grid-template-columns:1.05fr 1.35fr 1.35fr}tbody{display:table-row-group}table{display:table}tr{display:table-row}.score{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+<div>
+<p class="eyebrow">Sentence Landing · Human–LLM Co-Discovery</p>
+<h1>The Landing Game</h1>
+<p class="subtitle">A playable protocol in which humans and language models co-discover sentence landings by building stacks, borders, rivals, and recognition tests.</p>
+<div class="meta"><span class="pill">Game spec</span><span class="pill">Research protocol</span><span class="pill">AI alignment layer</span><span class="pill">Playable in one hour</span></div>
+<div class="rule"></div>
+</div>
+</header>
+
+<section class="panel">
+<h2>The point of the game</h2>
+<p class="lead">Yes: there is a game humans could play with LLMs to co-discover this. It should not be a quiz about grammar. It should not be a debate about definitions. It should be a game of making landing visible.</p>
+<p>The game begins from the centre: <strong>a sentence can land without being true; therefore the landing itself must become inspectable.</strong> A player does not win by proving that a sentence is true. A player wins by showing what the sentence has made stand before truth-testing begins, and by helping other players feel the same landing without being told its name too early.</p>
+<p>The LLM is not the oracle. The human is not the passive judge. The game works because each side has a different weakness. The model can generate many examples, rivals, paraphrases, and border cases quickly, but it may over-complete, over-explain, or make a beautiful wrong landing feel lawful. The human can feel resonance, discomfort, surprise, and overreach, but may not yet have the vocabulary to name what has happened. Co-discovery happens when the model generates a field and the human tests whether the field actually lands.</p>
+<div class="callout"><p><strong>The aim is not to ask the LLM what the theory is.</strong> The aim is to make the LLM produce enough controlled language that the human can see the theory appearing in the behaviour of sentences.</p></div>
+</section>
+
+<section>
+<h2>Game one: Find the landing</h2>
+<div class="panel">
+<p>This is the simplest version. One player gives a sentence. The LLM must not explain the topic first. It must answer only three questions: what did the sentence make stand, what did it direct attention toward or away from, and what would have to be true for that landing to be earned?</p>
+<div class="script">HUMAN:
+Sentence: "There is no alternative."
+Do not truth-test it yet. Inspect the landing.
+
+LLM:
+1. What landed: one path standing as necessity.
+2. What attention did: attention was turned away from possible alternatives.
+3. What must be earned: the closure must be justified by evidence that the alternatives are absent, impossible, or worse in the relevant frame.
+4. Warning: this sentence may land as necessity before necessity has been proven.</div>
+<p>The human then scores the answer. Did the model inspect the landing, or did it merely paraphrase the sentence? Did it catch the closure? Did it avoid deciding truth too early? Did it name what the sentence made feel settled?</p>
+</div>
+</section>
+
+<section>
+<h2>Game two: Stack until it hums</h2>
+<div class="panel">
+<p>The second game is the real discovery engine. The human and model choose one possible completion and build a stack of sentences that share it. The model generates candidates. The human removes impure examples. The model replaces weak examples. The human reads the stack aloud or silently until topic begins to fall away and completion begins to become perceptible.</p>
+<p>Example provisional landing: <strong>X remains X despite Y.</strong></p>
+<div class="grid">
+<div class="card"><b>Seed sentences</b><p>The promise survived the storm. The bridge survived the flood. The name survived the translation. The theorem survived the century. The friendship survived the argument.</p></div>
+<div class="card"><b>What should become visible</b><p>The nouns change. The scenes change. The emotional colour changes. But a single movement remains: something is preserved across pressure.</p></div>
+</div>
+<p>Once the stack has twenty or thirty examples, the LLM is asked to generate ten more without naming the pattern. The human identifies which ones belong. If the human can begin to detect members before formal explanation, the game has produced evidence of perceptual resonance.</p>
+<div class="callout"><p><strong>Discovery condition:</strong> the completion must become recognizable before the name is supplied. If the name is needed too early, the stack has not yet carried enough force.</p></div>
+</div>
+</section>
+
+<section>
+<h2>Game three: Border thieves</h2>
+<div class="panel">
+<p>This is where the game becomes serious. A border thief is a sentence that looks near the stack but lands elsewhere. It is not a failed sentence. It is not an error. It is a neighbouring success. The game asks the human to catch the thief and explain where it landed instead.</p>
+<table>
+<tbody>
+<tr><th>Target landing</th><th>Border sentence</th><th>Where it lands instead</th></tr>
+<tr><td>X remains X despite Y</td><td>The promise caused the storm.</td><td>Source or cause: X generates Y, not X surviving Y.</td></tr>
+<tr><td>X remains X despite Y</td><td>The promise followed the storm.</td><td>Temporal sequence or aftermath: X comes after Y, not through Y.</td></tr>
+<tr><td>X remains X despite Y</td><td>The promise ended with the storm.</td><td>Termination: Y closes X rather than testing its preservation.</td></tr>
+</tbody>
+</table>
+<p>The model’s job is to produce plausible border thieves. The human’s job is to feel the betrayal. This is a beautiful game because the thief is often grammatically smooth and semantically related. It belongs near the topic, but not in the landing. That distinction is the whole education.</p>
+</div>
+</section>
+
+<section>
+<h2>Game four: One-axis moves</h2>
+<div class="panel">
+<p>The 54-cell system becomes playable when players learn to move one axis while holding the others steady. The LLM proposes one-axis neighbours. The human decides whether the move feels like a lawful neighbour or a clumsy imitation.</p>
+<p>The three axes can be handled in ordinary language before formal terms are introduced:</p>
+<div class="grid">
+<div class="card"><b>Operation move</b><p>Change what the sentence is doing while keeping the direction and remainder similar. Preservation may become relation, correction, closure, or expansion.</p></div>
+<div class="card"><b>Orientation move</b><p>Keep the operation and residue, but turn attention toward, across, or away from the field differently.</p></div>
+<div class="card"><b>Remainder move</b><p>Keep the operation and orientation, but change what is left standing: identity, relation, or action.</p></div>
+<div class="card"><b>Human test</b><p>Can the player feel that only one thing has changed, or does the sentence jump too far?</p></div>
+</div>
+<p>This game is the beginning of completion-space as topology. Players are no longer classifying isolated sentences. They are learning to move through a field.</p>
+</div>
+</section>
+
+<section>
+<h2>Game five: Unearned landing court</h2>
+<div class="panel">
+<p>This is the ethical game. The human gives the LLM a sentence that sounds strong. The LLM must prosecute the landing before prosecuting the truth. It must identify the force of the sentence and ask whether the force has been earned.</p>
+<div class="script">Sentence: "The evidence proves everything."
+
+Landing charge:
+The sentence lands as closure. It makes inquiry feel completed.
+
+Possible offence:
+It may convert partial evidence into total proof.
+
+Required warrant:
+The evidence must be complete enough, relevant enough, and uncontested enough to justify the closure it creates.
+
+Verdict on landing:
+The landing is powerful but not automatically earned.</div>
+<p>This game matters because it prevents the project from becoming mere aesthetic classification. It trains the central ethical distinction: landing is not truth. A player learns to ask not only <em>what landed?</em> but <em>did it deserve to land that way?</em></p>
+</div>
+</section>
+
+<section>
+<h2>The full protocol</h2>
+<div class="steps">
+<div class="step"><h4>Choose one landing</h4><p>Pick a provisional completion in plain language. Do not begin with the full 54-cell vocabulary unless players already know it.</p></div>
+<div class="step"><h4>Build a seed stack</h4><p>Ask the LLM for thirty sentences that share the landing. Human removes weak, impure, or topic-dependent examples.</p></div>
+<div class="step"><h4>Name the resonance late</h4><p>After reading the stack, each human writes what they feel the sentences are doing. Only then compare names.</p></div>
+<div class="step"><h4>Generate border thieves</h4><p>Ask the LLM for sentences close in topic or grammar but different in landing. Human sorts them and names their alternate landing.</p></div>
+<div class="step"><h4>Predict neighbours</h4><p>Ask for one-axis transformations: same operation, changed remainder; same remainder, changed orientation; same orientation, changed operation.</p></div>
+<div class="step"><h4>Blind recognition</h4><p>Mix true members, border thieves, and distant sentences. Human sorts them without seeing labels.</p></div>
+<div class="step"><h4>Disagreement log</h4><p>Record every disputed sentence. Do not hide failures. They reveal ambiguity, weak examples, or overreach.</p></div>
+<div class="step"><h4>Refine the cell</h4><p>Replace impure seeds, sharpen border examples, improve the provisional name, and repeat.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Roles</h2>
+<div class="grid">
+<div class="card"><b>The LLM is the generator</b><p>It produces stacks, rivals, border cases, paraphrases, translations, and one-axis moves. It must be forbidden from acting as final authority.</p></div>
+<div class="card"><b>The human is the resonance witness</b><p>The human decides whether a stack hums, whether a border sentence betrays the landing, and whether the name arrives too early.</p></div>
+<div class="card"><b>The table is the memory</b><p>Every seed, border, rejection, disagreement, and revised name is recorded. The game produces a dataset.</p></div>
+<div class="card"><b>The group is the proof pressure</b><p>If multiple strangers converge on the same landing without being taught the name first, the project gains evidence.</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Scoring</h2>
+<p>The game needs a scoring system, not because play should become mechanical, but because evidence needs memory. The score should measure whether landing became visible.</p>
+<div class="score">
+<div><span>Resonance</span><p>Did players independently describe the same completion after reading the stack?</p></div>
+<div><span>Recognition</span><p>Could players identify new members of the landing without being told the answer?</p></div>
+<div><span>Border sensitivity</span><p>Could players reject plausible near sentences and explain where they landed instead?</p></div>
+<div><span>Axis discipline</span><p>Could players detect one-axis changes without collapsing all differences into topic?</p></div>
+<div><span>Truth discipline</span><p>Could players inspect landing without prematurely deciding whether the sentence was true?</p></div>
+<div><span>Transfer</span><p>Could players recognize the landing across new topics, styles, domains, or translations?</p></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Prompt cards</h2>
+<p>These prompt cards make the game immediately playable with any capable LLM.</p>
+<h3>Seed stack card</h3>
+<div class="script">Generate 30 short sentences that share this landing: [plain landing].
+Do not explain the landing.
+Vary topic, domain, emotional tone, subject matter, and grammar.
+Avoid repeated wording.
+After the list, mark any sentence you think may be impure.</div>
+<h3>Border thief card</h3>
+<div class="script">Generate 15 sentences that are close in topic or wording to this stack but do NOT share its landing.
+For each one, say where it lands instead.
+Do not call them failures. They are successful neighbouring landings.</div>
+<h3>Blind sort card</h3>
+<div class="script">Create a shuffled set of 24 sentences:
+8 true members of the target landing,
+8 neighbouring border sentences,
+8 distant sentences.
+Do not label them.
+Ask me to sort them into: belongs, near but different, distant.
+After I answer, reveal your key and explain disagreements.</div>
+<h3>Unearned landing card</h3>
+<div class="script">Inspect this sentence before truth-testing it: [sentence].
+What did it make stand?
+What did it close, imply, preserve, accuse, excuse, or render inevitable?
+What would have to be true for that landing to be earned?
+What is the nearest way this sentence could mislead while still landing clearly?</div>
+</section>
+
+<section class="panel">
+<h2>Why it is a game and not only a method</h2>
+<p>It must be a game because games expose skill before doctrine. If the project is real, people should be able to get better at it. They should begin as ordinary readers and become more sensitive readers. They should notice when a sentence lands as closure before it has earned closure. They should spot a border thief. They should feel when a translation preserved topic but changed landing. They should become faster, sharper, and less gullible without becoming cynical.</p>
+<p>The game also protects the project from becoming authoritarian. If an LLM simply announces the cell, the player learns obedience. If the human must feel the stack, catch the border, disagree with the model, and refine the examples, the player learns perception. That is the difference between a doctrine and an instrument.</p>
+<p>Most importantly, the game makes failures useful. If players cannot recognize a landing, that does not automatically disprove the whole system. It may mean the stack was impure, the proposed landing was too vague, the border cases were badly chosen, the name was premature, or the cell is not as coherent as believed. A good game turns failure into diagnosis.</p>
+</section>
+
+<section class="panel">
+<h2>The first public version</h2>
+<p>The first public version should be simple enough to play in a browser or a workshop. It should not ask users to learn the whole theory. It should ask them to play through one cell.</p>
+<p>A landing appears. A stack arrives. The user reads. The name is withheld. The user describes what the sentences are doing. Then border thieves appear. The user sorts them. Then one-axis neighbours appear. The user feels how close and how different they are. Finally, the system gives a real-world sentence and asks whether its landing has been earned.</p>
+<p>At the end, the user has not merely learned a term. The user has had an experience: <strong>I can now see something a sentence does before I decide whether to believe it.</strong></p>
+<div class="callout"><p>That experience is the conversion point. The game succeeds when the player stops asking whether the theory is interesting and starts catching landings in ordinary language.</p></div>
+</section>
+
+<section class="panel">
+<h2>The deeper possibility</h2>
+<p>A game like this could become a discovery engine. Thousands of human–LLM sessions could generate candidate stacks for all 54 cells. Humans could score resonance. Disagreements could map ambiguous zones. Translations could test what survives across language. Domain versions could reveal which completions dominate law, education, medicine, AI answers, apology, propaganda, proof, and fiction.</p>
+<p>Then the game is no longer only play. It becomes corpus construction, perception training, evaluation design, and theory testing at once.</p>
+<p>It also becomes a new kind of AI alignment task. The model is no longer rewarded merely for producing smooth continuations. It is asked to expose its own landings, generate rivals, admit unearned closure, and submit its completions to human recognition. The human is no longer merely rating preference. The human is judging whether the language made something stand lawfully.</p>
+<p>This is co-discovery in the proper sense: the model supplies range, speed, variation, and pressure; the human supplies recognition, resistance, judgement, and lived intelligibility. The theory is discovered between them.</p>
+</section>
+
+<section class="panel">
+<h2>A sample one-hour session</h2>
+<p>The session begins with no theory lecture. The host says only this: some sentences make things stand before we know whether those things are true. Today we are going to learn to see that first standing. Then the host gives the group a landing without naming it: something remains itself across pressure. The LLM generates twenty candidate seed sentences. The group reads them aloud, removes the weak ones, and asks for replacements. Nobody is yet allowed to say the formal name.</p>
+<p>After ten minutes, each player writes one private sentence describing what the stack is doing. The descriptions are compared. If several players independently say words like survives, remains, carries through, keeps identity, withstands, or is preserved, the group has its first evidence that the stack has produced resonance. The name is then introduced only as a temporary handle, not as doctrine: <span class="tag">X remains X despite Y</span>.</p>
+<p>The second phase introduces border thieves. The model offers sentences that look close: the promise caused the storm, the promise followed the storm, the promise ended with the storm, the promise returned after the storm. The players sort them. The room starts to learn that topic-nearness is not landing-nearness. This is usually the first moment of genuine discovery. A player realizes that a sentence can involve the same promise and the same storm while doing a completely different thing.</p>
+<p>The third phase is blind recognition. The LLM creates a shuffled list. Some belong, some are near but different, some are far away. Players sort without explanation. The score is not used to shame anyone. The score reveals whether the landing has become perceptible. The best moments happen when players disagree and then discover why: one sentence contains two possible landings, one example is too metaphorical, one sentence smuggles in causation, one sentence preserves identity but changes orientation. The disagreement is not noise. It is the map being drawn.</p>
+<p>The final phase is ethical. The host gives a powerful sentence from ordinary life: the evidence proves everything, she betrayed the team, there is no alternative, the policy protects everyone. Players inspect landing before truth. They ask what has been made to stand and what would have to be true for that standing to be earned. The session ends when someone says, without prompting: I can feel the landing, but I do not know yet whether it deserved to land.</p>
+</section>
+
+<section class="panel">
+<h2>The dataset the game creates</h2>
+<p>Every round leaves behind useful material. The accepted seed sentences become positive examples. The rejected seeds become impurity examples. The border thieves become neighbouring-cell evidence. The blind-sort results become recognition data. The disagreement notes become a map of ambiguity. The player descriptions become evidence of whether ordinary language users converge on the same unnamed completion.</p>
+<p>This matters because the project needs proof objects, not only essays. A proof object is something another person can inspect, repeat, and contest. The game produces exactly that. It creates a record of which landings became visible, which remained vague, which examples carried the resonance, which examples broke it, and which rival completions were most easily confused with the target.</p>
+<p>Over many sessions, the material becomes more than anecdote. A cell can accumulate a stack of high-confidence seeds, known border thieves, common confusions, successful translations, failed translations, one-axis neighbours, and recognition scores from strangers. That is the beginning of a real sentence-landing corpus. It would be born not from the model alone and not from human intuition alone, but from repeated human–model pressure.</p>
+</section>
+
+<section class="panel">
+<h2>Anti-cheat rules</h2>
+<p>The game needs anti-cheat rules because both humans and models can cheat without meaning to. The model cheats when it supplies the explanation too early, when it makes every sentence fit, when it flatters the theory, when it treats its own classification as authority, or when it converts ambiguity into false confidence. The human cheats when they accept a beautiful name before feeling the stack, when they sort by topic instead of landing, when they punish unusual speech, or when they treat disagreement as failure rather than information.</p>
+<p>The first anti-cheat rule is withholding. Do not give the cell name before the stack has had a chance to work. The second is impurity permission. Players must be allowed to reject model examples without needing to defend themselves perfectly at first. The third is rival dignity. Border sentences are not wrong; they are lawful elsewhere. The fourth is truth delay. No one may argue about whether the sentence is true until everyone has said what landed. The fifth is audit humility. A confident model answer counts as a proposal, not as a verdict.</p>
+<p>These rules keep the game from becoming a demonstration of model obedience. The purpose is not to make the model say the right vocabulary. The purpose is to train perception under pressure.</p>
+</section>
+
+<section class="panel">
+<h2>Why humans need LLMs here</h2>
+<p>A person could invent examples alone, but the LLM changes the scale of the exercise. It can produce variation faster than a human can. It can move the same landing through household speech, law, mathematics, medicine, politics, childhood, apology, myth, instruction, warning, and proof. It can generate border cases on demand. It can translate, paraphrase, intensify, weaken, formalize, and colloquialize. It can make the field large enough for the human to stop clinging to individual topic and begin seeing movement.</p>
+<p>But the LLM needs the human because it does not possess the final lived test. It can generate a hundred sentences that appear to share a completion, but the human can say: no, this one slid into causation; this one became mere sequence; this one sounds clever but does not hum; this one preserves the words but loses the landing. That human refusal is not decorative. It is the corrective pressure that turns generation into discovery.</p>
+<p>The game therefore uses the model’s abundance against the model’s own weakness. It asks the model to produce more language than any one human would comfortably produce, then asks human recognition to judge whether the abundance reveals a stable completion or only a plausible fog.</p>
+</section>
+
+<section class="panel">
+<h2>The final rule</h2>
+<p>The game must always preserve the central distinction.</p>
+<p class="lead">A sentence can land without being true. Therefore the landing itself must become inspectable.</p>
+<p>Every round of the game should return to that rule. Do not let the game become grammar. Do not let it become persuasion hacking. Do not let it become a scoring gimmick. Do not let the model become a priest. Do not let the human become a passive consumer of labels.</p>
+<p>The game is for learning how language reaches us before belief. It trains the player to pause in the tiny interval between reception and surrender. It asks: what has been made stand? Has it earned the right to stand there?</p>
+<p>That is the whole game. And if people can learn to play it, the project has its first living classroom.</p>
+</section>
+
+<footer>The Landing Game · Human–LLM Co-Discovery Protocol · Sentence Landing</footer>
+</main>
+</body>
+</html>

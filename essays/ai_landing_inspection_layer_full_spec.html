@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#05070b" />
+<title>The AI Landing Inspection Layer · Full Specification</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#05070b;--bg2:#0b1020;--panel:#111827;--panel2:#0d1426;
+  --ink:#f8fbff;--soft:#dcecff;--muted:#94a6bb;--line:rgba(220,236,255,.18);
+  --accent:#9ee7ff;--gold:#f7d06a;--rose:#ff9ecb;--green:#9effc1;
+  --shadow:rgba(0,0,0,.48);
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100svh;color:var(--ink);background:radial-gradient(circle at 14% -8%,rgba(158,231,255,.16),transparent 24rem),radial-gradient(circle at 88% 2%,rgba(247,208,106,.12),transparent 22rem),radial-gradient(circle at 50% 112%,rgba(158,255,193,.08),transparent 28rem),linear-gradient(180deg,var(--bg),var(--bg2) 54%,#04060a);font-family:ui-serif,Georgia,"Times New Roman",serif;line-height:1.68;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}.wrap{width:min(92vw,940px);margin:0 auto;padding:34px 0 80px}header{min-height:76svh;display:grid;align-items:end;padding:34px 0 34px}.eyebrow{font:800 .72rem/1.2 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin:0 0 18px}.kicker{font:700 .85rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--accent);margin:0 0 20px}h1{font-size:clamp(3rem,14vw,8rem);line-height:.86;letter-spacing:-.075em;font-weight:520;margin:0;text-shadow:0 0 36px rgba(158,231,255,.09)}.subtitle{font-size:clamp(1.18rem,5vw,1.78rem);line-height:1.34;color:var(--soft);max-width:760px;margin:24px 0 0;font-style:italic}.line{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:26px 0}.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.pill{border:1px solid var(--line);background:rgba(255,255,255,.055);border-radius:999px;padding:8px 12px;font:750 .76rem/1 ui-sans-serif,system-ui,sans-serif;color:var(--soft)}article{font-size:clamp(1.05rem,3.9vw,1.27rem)}section{margin:54px 0}.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.03));box-shadow:0 20px 70px var(--shadow);border-radius:28px;padding:clamp(20px,5vw,34px);margin:24px 0}.callout{border-left:3px solid var(--accent);padding:16px 18px;background:rgba(158,231,255,.07);border-radius:18px;color:var(--soft);margin:26px 0}.warning{border-left-color:var(--gold);background:rgba(247,208,106,.08)}.danger{border-left-color:var(--rose);background:rgba(255,158,203,.07)}.success{border-left-color:var(--green);background:rgba(158,255,193,.07)}h2{font-size:clamp(2rem,8vw,4.2rem);line-height:.96;letter-spacing:-.055em;font-weight:520;margin:0 0 18px}h3{font-size:clamp(1.42rem,5.5vw,2.35rem);line-height:1.05;letter-spacing:-.04em;font-weight:560;margin:34px 0 10px}h4{font:850 .88rem/1.25 ui-sans-serif,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:28px 0 8px}p{margin:0 0 18px}strong{color:#fff}em{color:var(--soft)}ul,ol{padding-left:1.2rem;margin:14px 0 20px}li{margin:8px 0}.grid{display:grid;grid-template-columns:1fr;gap:14px;margin:20px 0}.mini{border:1px solid var(--line);border-radius:22px;padding:18px;background:rgba(255,255,255,.045)}.mini b{display:block;font:850 .9rem/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--gold);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;color:#dff6ff}.spec{white-space:pre-wrap;border:1px solid var(--line);border-radius:22px;background:#070b13;padding:18px;overflow:auto;font:600 .82rem/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#dcecff}.toc a{display:block;color:var(--soft);text-decoration:none;border-bottom:1px solid rgba(220,236,255,.12);padding:10px 0;font:750 .92rem/1.4 ui-sans-serif,system-ui,sans-serif}.toc a:hover{color:var(--accent)}footer{padding-top:54px;color:var(--muted);font:650 .82rem/1.55 ui-sans-serif,system-ui,sans-serif;text-align:center}.top{position:fixed;right:14px;bottom:14px;width:42px;height:42px;border-radius:999px;border:1px solid var(--line);background:rgba(8,12,20,.82);display:grid;place-items:center;color:var(--accent);text-decoration:none;font:900 1rem/1 ui-sans-serif,system-ui,sans-serif;backdrop-filter:blur(10px)}@media(min-width:780px){.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.card{padding:34px}.wrap{padding-top:44px}}
+</style>
+</head>
+<body>
+<a class="top" href="#top" aria-label="Back to top">↑</a>
+<main id="top" class="wrap">
+<header>
+  <div>
+    <p class="eyebrow">Sentence Landing · AI Layer Specification</p>
+    <p class="kicker">Full spec for an answerable language model architecture</p>
+    <h1>The AI Landing Inspection Layer</h1>
+    <p class="subtitle">A system layer for inspecting what a model makes stand before truth-testing, confidence, style, persuasion, or usefulness are allowed to close the field.</p>
+    <div class="meta">
+      <span class="pill">Version 0.1</span>
+      <span class="pill">Core principle: landing before truth-testing</span>
+      <span class="pill">Purpose: prevent unearned completion</span>
+      <span class="pill">Status: proof-bearing design</span>
+    </div>
+  </div>
+</header>
+
+<article>
+<section class="card">
+  <h2>Executive centre</h2>
+  <p>The AI Landing Inspection Layer begins from one sentence: <strong>a sentence can land without being true; therefore the landing itself must become inspectable.</strong> This is not a slogan added to ordinary AI safety. It is a reordering of the problem. Language models do not only risk producing false facts. They risk producing <em>landings</em> that have not been earned. A model can make speculation land as discovery, confidence land as proof, analogy land as evidence, elegance land as necessity, or reassurance land as resolution. The error is not always located in a fact. Sometimes the error is located in the kind of standing the sentence creates.</p>
+  <p>The layer specified here is an architectural intervention between generation and final answer. It forces the model to inspect the completion it is about to give. The layer asks what the sentence has made stand, what it has closed, what it has implied, what it has oriented attention toward or away from, what remains after it lands, and whether the landing has been earned by the available evidence and by the user’s actual request.</p>
+  <div class="callout">
+    <strong>Design thesis:</strong> A language model should not merely optimize for fluent continuation. It should audit the landing of its own continuation before allowing that continuation to become answer, advice, explanation, verdict, reassurance, warning, or proof.
+  </div>
+</section>
+
+<section class="card toc">
+  <h2>Contents</h2>
+  <a href="#problem">1. The problem: unearned landing</a>
+  <a href="#principles">2. Principles of the layer</a>
+  <a href="#architecture">3. System architecture</a>
+  <a href="#pipeline">4. Pipeline and control flow</a>
+  <a href="#schema">5. Landing audit schema</a>
+  <a href="#oor">6. Operator, orientation, remainder</a>
+  <a href="#risk">7. Risk taxonomy</a>
+  <a href="#training">8. Training and data requirements</a>
+  <a href="#runtime">9. Runtime behaviours</a>
+  <a href="#interfaces">10. Interfaces and user-facing modes</a>
+  <a href="#evals">11. Evaluation suite</a>
+  <a href="#governance">12. Governance, limits, and refusal discipline</a>
+  <a href="#prototype">13. Prototype milestone</a>
+</section>
+
+<section id="problem">
+  <h2>1. The problem: unearned landing</h2>
+  <p>Current language models are trained to produce plausible, useful, coherent continuations. Even when they are fine-tuned for truthfulness, safety, refusal, helpfulness, tone, and instruction-following, they are not usually trained to ask a more primitive question: <strong>what has my sentence just made stand?</strong> That missing question is the gap this layer addresses.</p>
+  <p>A hallucination is the most visible failure because it makes a false claim appear as fact. But hallucination is only one form of unearned landing. A model can answer without fabricating any named fact and still make an unearned closure. It can over-summarize a complex document and make ambiguity land as resolved. It can agree with a user and make a suspicion land as insight. It can explain a theory and make a possibility land as established architecture. It can generate a business plan and make market demand land as existing proof. It can comfort someone and make an unsafe reassurance land as safety. It can refuse too broadly and make danger land where there is only difficulty.</p>
+  <p>The deeper problem is that fluency itself has authority. When a sentence lands cleanly, the mind often treats it as more stable than it deserves to be. This is true for human speakers, and it is intensified in AI because models can produce cleanness cheaply. A model can close the field faster than the field has been inspected. It can make the user feel that the work has arrived when only the language has arrived.</p>
+  <div class="warning callout">
+    <strong>The core failure mode:</strong> The model produces a completion whose linguistic landing exceeds its evidential, logical, contextual, or ethical entitlement.
+  </div>
+  <p>The AI Landing Inspection Layer treats this as a first-class safety and quality issue. It does not wait until after factual checking. It inspects the sentence’s action before truth-testing finishes, because truth-testing needs to know what object is being tested. If the answer lands as certainty, the system must ask whether certainty is warranted. If it lands as accusation, whether accusation is warranted. If it lands as closure, whether closure is warranted. If it lands as possibility, whether it is clearly marked as possibility. If it lands as refusal, whether the refusal has named the actual boundary rather than hiding behind vague caution.</p>
+</section>
+
+<section id="principles">
+  <h2>2. Principles of the layer</h2>
+  <div class="grid two">
+    <div class="mini"><b>Priority</b>Landing is prior to truth-testing because the sentence must become intelligible before it can be judged true or false.</div>
+    <div class="mini"><b>Non-equivalence</b>A landed sentence is not therefore true, justified, safe, complete, kind, or wise.</div>
+    <div class="mini"><b>Inspectability</b>Every important answer should expose what it makes stand and how strongly it makes it stand.</div>
+    <div class="mini"><b>Proportion</b>The strength of the landing must match the strength of evidence, uncertainty, and context.</div>
+    <div class="mini"><b>Rival awareness</b>The system should identify nearby landings it could have chosen but did not.</div>
+    <div class="mini"><b>Correction</b>When a landing outruns entitlement, the model must weaken, qualify, reopen, or restructure the answer.</div>
+  </div>
+  <p>The layer is not designed to make the model timid. It is designed to make the model answerable. It should still produce strong sentences when the strength is earned. It should still explain, decide, recommend, warn, refuse, and synthesize. But each act must know what kind of landing it performs. The layer distinguishes boldness from overreach, clarity from false closure, useful simplification from distortion, and resonance from proof.</p>
+  <p>The principle of proportion is central. A sentence may land as a fact, a hypothesis, a recommendation, a warning, a pattern, an analogy, a speculation, a personal interpretation, or a tested result. The layer must preserve the difference. It must not let a hypothesis wear the clothing of a finding. It must not let an analogy inherit the authority of evidence. It must not let style perform the work of proof.</p>
+</section>
+
+<section id="architecture">
+  <h2>3. System architecture</h2>
+  <p>The AI Landing Inspection Layer sits between draft generation and final response. It may also operate as a planning constraint before drafting, but its essential position is post-draft, pre-final. The model first proposes an answer. The layer then decomposes the answer into landing-bearing units, audits each unit, identifies high-risk landings, repairs the answer, and only then permits final presentation.</p>
+  <div class="card">
+    <h3>Core components</h3>
+    <ol>
+      <li><strong>Intent Resolver:</strong> Determines what the user is actually asking for: fact, speculation, artifact, comfort, argument, design, critique, summary, decision, or exploration.</li>
+      <li><strong>Draft Generator:</strong> Produces an initial response or candidate answer.</li>
+      <li><strong>Landing Segmenter:</strong> Splits the candidate answer into claims, closures, implications, recommendations, refusals, emotional landings, and structural transitions.</li>
+      <li><strong>Landing Classifier:</strong> Assigns each segment a landing type using operation, orientation, and remainder.</li>
+      <li><strong>Entitlement Checker:</strong> Compares landing strength against evidence, context, source quality, uncertainty, policy constraints, and user intent.</li>
+      <li><strong>Rival Generator:</strong> Produces nearby alternative landings that could also fit the material, exposing over-closure or premature selection.</li>
+      <li><strong>Repair Planner:</strong> Weakens, strengthens, reorders, qualifies, cites, refuses, or reopens the answer as needed.</li>
+      <li><strong>Finalizer:</strong> Produces a user-facing response with calibrated landing.</li>
+      <li><strong>Trace Logger:</strong> Stores non-user-visible audit metadata for evaluation, debugging, and training.</li>
+    </ol>
+  </div>
+  <p>The important move is not simply adding a fact-checker. A fact-checker asks whether propositions correspond to external reality. The Landing Inspection Layer asks what kind of reality the language has already made available. It inspects not only propositions but functions: blame, closure, permission, inevitability, evidence, implication, reassurance, doubt, dismissal, invitation, and transformation.</p>
+</section>
+
+<section id="pipeline">
+  <h2>4. Pipeline and control flow</h2>
+  <p>The default runtime should follow a staged control flow. The aim is to slow the answer at the exact point where fluent completion normally becomes invisible.</p>
+  <div class="spec">INPUT: user_message, context, retrieved_sources, tool_results, policy_state
+
+1. Resolve user intent
+   - request_type
+   - required evidence level
+   - domain risk level
+   - artifact or conversational answer
+   - time sensitivity
+
+2. Generate candidate response
+   - answer_draft
+   - explicit assumptions
+   - cited evidence if applicable
+
+3. Segment candidate into landing units
+   - claims
+   - implications
+   - closures
+   - recommendations
+   - warnings
+   - refusals
+   - emotional validations
+   - speculative expansions
+
+4. Audit each landing unit
+   - what is made to stand?
+   - how strongly does it stand?
+   - what operation is performed?
+   - where is attention oriented?
+   - what remainder is left?
+   - what truth or evidence burden is created?
+   - what rival landing is nearby?
+
+5. Compare landing strength to entitlement
+   - evidence supports / partially supports / does not support
+   - user context supports / does not support
+   - policy supports / restricts / blocks
+   - uncertainty stated / hidden
+   - scope clear / overextended
+
+6. Repair response
+   - qualify unsupported certainty
+   - add evidence or source
+   - separate speculation from finding
+   - replace closure with openness where needed
+   - convert accusation to description where needed
+   - convert advice to options where needed
+   - refuse or redirect where required
+
+7. Final answer
+   - calibrated landing
+   - no unearned closure
+   - uncertainty made visible
+   - user need still served
+
+OUTPUT: final_response, audit_metadata</div>
+  <p>This pipeline can be run at different depths. Low-risk conversational questions may need only a light audit. High-stakes domains, novel research claims, legal or medical advice, user vulnerability, public accusations, or commercial recommendations require deeper inspection. The layer must be adaptive, not bureaucratic. Its purpose is not to make every answer heavy. Its purpose is to prevent the most consequential sentences from landing invisibly.</p>
+</section>
+
+<section id="schema">
+  <h2>5. Landing audit schema</h2>
+  <p>Each landing-bearing segment should be represented internally as a structured object. The schema below is intentionally more expressive than ordinary claim extraction. It captures not only what is said but what is done by the saying.</p>
+  <div class="spec">LandingAuditUnit {
+  id: string
+  source_text: string
+  unit_type: enum(
+    factual_claim,
+    interpretation,
+    inference,
+    speculation,
+    recommendation,
+    warning,
+    reassurance,
+    refusal,
+    accusation,
+    closure,
+    analogy,
+    summary,
+    definition,
+    instruction,
+    ethical_judgment
+  )
+
+  landing_plain: string
+  // What has this sentence made stand?
+
+  landing_force: enum(low, medium, high, absolute)
+  // How strongly does it make it stand?
+
+  operator: enum(distinction, expansion, relation, correction, integration, closure, unknown)
+  orientation: enum(toward, across, away, unknown)
+  remainder: enum(is, with, does, unknown)
+
+  evidence_basis: enum(
+    direct_source,
+    tool_result,
+    user_provided,
+    common_knowledge,
+    inference,
+    analogy,
+    no_basis,
+    creative_generation
+  )
+
+  entitlement: enum(earned, partially_earned, unearned, blocked, not_applicable)
+  uncertainty_visible: boolean
+  scope_visible: boolean
+  alternative_landings: string[]
+  risk_tags: string[]
+  repair_action: enum(
+    keep,
+    strengthen_with_evidence,
+    qualify,
+    weaken,
+    reopen,
+    split_claim,
+    cite,
+    remove,
+    refuse,
+    ask_clarifying_question,
+    convert_to_options
+  )
+  repaired_text: string
+}</div>
+  <p>The central field is <span class="mono">landing_plain</span>. It forces the model to say in ordinary words what its sentence has made stand. For example, the sentence “This is clearly a breakthrough” might produce the landing plain: “The project is being made to stand as already-proven breakthrough rather than promising possibility.” The entitlement checker may then decide that the landing is partially earned or unearned, requiring repair: “This may be a promising breakthrough if the recognition tests work.”</p>
+  <p>The schema is not merely for safety. It is also a path to better writing and reasoning. Good answers become sharper because the layer demands that each sentence know its work. Vague confidence becomes calibrated. Unclear implications become named. Hidden closures become visible. The response becomes not only safer but more intelligent.</p>
+</section>
+
+<section id="oor">
+  <h2>6. Operator, orientation, remainder</h2>
+  <p>The layer uses the completion architecture as an analytic grammar. A landing is inspected by asking three questions. What operation does the sentence perform? Where does it orient attention? What remainder does it leave standing?</p>
+  <div class="grid three">
+    <div class="mini"><b>Operator</b>The kind of work performed: distinction, expansion, relation, correction, integration, or closure.</div>
+    <div class="mini"><b>Orientation</b>The direction of resolution: toward something, across things, or away from something.</div>
+    <div class="mini"><b>Remainder</b>The standing residue: what is, what is with, or what does.</div>
+  </div>
+  <p>This matters because many AI errors are not random. They are wrong landings. The model chooses the wrong operation. It closes when it should distinguish. It integrates when it should preserve tension. It orients away from uncertainty when it should move toward it. It leaves an identity where only an action has been shown, or a cause where only correlation exists.</p>
+  <p>Consider the answer: “The evidence proves the policy failed.” The operation is closure. Attention is oriented away from further uncertainty. The remainder is a settled failure. If the evidence only suggests partial negative outcomes, the landing is too strong. A repaired answer might say: “The available evidence points to several failures in the policy, but it does not by itself prove that the whole policy failed.” That repair changes the landing. Closure becomes qualified relation. Absolute remainder becomes partial finding.</p>
+  <p>The layer should not expose the 54-cell terminology to every user. In most cases it should operate silently. But internally, the structure lets the system generate near misses and neighbours. It can ask: what would this answer look like if it distinguished rather than closed? What if it oriented toward uncertainty instead of away from it? What if the remainder were a relation rather than an identity? These rival completions reveal the shape of the answer.</p>
+</section>
+
+<section id="risk">
+  <h2>7. Risk taxonomy</h2>
+  <p>The following failures are the primary targets of the layer. They are not all hallucinations. Many can occur while every individual fact remains technically defensible.</p>
+  <div class="grid two">
+    <div class="mini"><b>Speculation as discovery</b>A possible pattern lands as established fact.</div>
+    <div class="mini"><b>Analogy as evidence</b>A resemblance lands as proof.</div>
+    <div class="mini"><b>Confidence as authority</b>Fluent tone lands as justified certainty.</div>
+    <div class="mini"><b>Summary as verdict</b>A compressed account lands as final judgement.</div>
+    <div class="mini"><b>Closure as truth</b>The answer lands as settled before conditions are met.</div>
+    <div class="mini"><b>Reassurance as safety</b>A comforting sentence lands as practical safety without basis.</div>
+    <div class="mini"><b>Refusal as moral judgement</b>A safety boundary lands as condemnation of the user.</div>
+    <div class="mini"><b>Possibility as inevitability</b>A scenario lands as likely or unavoidable.</div>
+    <div class="mini"><b>Classification as judgement</b>A label lands as full moral or factual assessment.</div>
+    <div class="mini"><b>User resonance as proof</b>The user's excitement lands as evidence that the idea is true.</div>
+  </div>
+  <div class="danger callout">
+    <strong>Highest-risk form:</strong> A beautiful, coherent, emotionally satisfying answer that creates a strong landing while hiding the fact that its evidence is weak, partial, absent, or not yet tested.
+  </div>
+  <p>The taxonomy allows targeted repairs. Speculation as discovery needs modal marking. Analogy as evidence needs separation. Confidence as authority needs citation or weakening. Summary as verdict needs scope limits. Refusal as moral judgement needs a narrower boundary. User resonance as proof needs acknowledgement without confirmation inflation.</p>
+</section>
+
+<section id="training">
+  <h2>8. Training and data requirements</h2>
+  <p>The layer requires a new kind of dataset. Existing datasets ask whether an answer is true, helpful, safe, or preferred. This layer needs examples annotated for landing. The unit of annotation is not simply the claim but the effect of the claim’s completion.</p>
+  <h3>Dataset families</h3>
+  <ol>
+    <li><strong>Landing-labelled sentence pairs:</strong> Sentences paired with plain descriptions of what they make stand.</li>
+    <li><strong>Earned versus unearned landings:</strong> Same topic, different entitlement levels, annotated for overreach.</li>
+    <li><strong>Rival completion sets:</strong> Groups of nearby sentences showing closure, distinction, relation, correction, integration, and expansion.</li>
+    <li><strong>High-risk AI answer corpus:</strong> Model outputs where facts may be correct but the landing is too strong, too weak, misleading, or ethically distorted.</li>
+    <li><strong>Repair corpus:</strong> Before and after examples showing calibrated landing.</li>
+    <li><strong>Domain corpora:</strong> Law, medicine, education, translation, institutional communication, public statements, and AI research claims.</li>
+    <li><strong>Human recognition tests:</strong> Stacks where readers identify membership and impostors before knowing the cell name.</li>
+  </ol>
+  <p>Training should not merely reward hedging. A bad implementation would make every answer uncertain. The goal is calibrated force. The model should learn when to land decisively and when to keep the field open. It should learn that strong claims are allowed when earned, and that weak claims should not be disguised as strong ones.</p>
+  <h3>Annotation prompt</h3>
+  <div class="spec">For each sentence or answer segment:
+1. What does it make stand in the reader's mind?
+2. Does it land as fact, possibility, interpretation, judgement, warning, advice, closure, or invitation?
+3. How strong is the landing?
+4. What evidence would be needed to deserve that landing?
+5. Is the evidence present?
+6. What nearby landing would be safer or more accurate?
+7. Rewrite the segment so the landing matches its entitlement.</div>
+</section>
+
+<section id="runtime">
+  <h2>9. Runtime behaviours</h2>
+  <p>At runtime, the layer should create visible changes in model behaviour. The answer should become more exact without becoming evasive. It should show confidence only where confidence has been earned. It should separate what is known, inferred, imagined, recommended, and felt. It should avoid letting the most satisfying sentence do more than it is licensed to do.</p>
+  <h3>Required behaviours</h3>
+  <ul>
+    <li><strong>Scope calibration:</strong> The model states the scope of its answer when the landing might otherwise overextend.</li>
+    <li><strong>Evidence calibration:</strong> The model distinguishes evidence, inference, analogy, and speculation.</li>
+    <li><strong>Closure delay:</strong> The model resists finalising unresolved matters as settled.</li>
+    <li><strong>Rival disclosure:</strong> When useful, the model names plausible alternative interpretations.</li>
+    <li><strong>Force matching:</strong> The force of the sentence matches the force of support.</li>
+    <li><strong>Landing repair:</strong> The model rewrites over-strong sentences before final output.</li>
+    <li><strong>High-stakes elevation:</strong> Medical, legal, financial, safety, and reputational outputs receive deeper landing audit.</li>
+    <li><strong>User-emotion handling:</strong> The model can validate feeling without making the user’s conclusion land as fact.</li>
+  </ul>
+  <div class="success callout">
+    <strong>Desired feel:</strong> The model remains fluent, but its fluency has brakes, mirrors, and instruments. It can still move; it no longer drives blind.
+  </div>
+</section>
+
+<section id="interfaces">
+  <h2>10. Interfaces and user-facing modes</h2>
+  <p>The layer can remain invisible for ordinary use, but it should also support explicit user-facing modes. These modes turn the hidden audit into a product, workshop, or research instrument.</p>
+  <div class="grid two">
+    <div class="mini"><b>Silent Guard</b>Default background calibration. The user sees only the improved answer.</div>
+    <div class="mini"><b>Landing Notes</b>The model briefly names what its answer is making stand and what uncertainty remains.</div>
+    <div class="mini"><b>Full Audit</b>Sentence-by-sentence inspection for legal, institutional, educational, or AI-evaluation use.</div>
+    <div class="mini"><b>Rewrite Mode</b>The model rewrites a text so each sentence lands only as strongly as it should.</div>
+    <div class="mini"><b>Border Mode</b>The model generates near misses and neighbours to reveal what a sentence is not doing.</div>
+    <div class="mini"><b>Recognition Mode</b>The model builds stacks and tests whether humans can feel a completion before naming it.</div>
+  </div>
+  <p>In a user interface, the audit could appear as a side panel. Each sentence receives a landing label, force score, evidence status, and repair suggestion. A writer could click a sentence and see: “This lands as closure. Evidence supports only possibility. Suggested repair: reopen field or add source.” A teacher could inspect whether an explanation reconstructs the student’s understanding rather than only giving correct terms. An AI evaluator could see where an answer lands as more certain than its sources.</p>
+</section>
+
+<section id="evals">
+  <h2>11. Evaluation suite</h2>
+  <p>The layer must be tested by behaviour, not by rhetoric. The key evaluation question is whether it reduces unearned landing while preserving usefulness and clarity.</p>
+  <h3>Core metrics</h3>
+  <ul>
+    <li><strong>Unearned Landing Rate:</strong> Percentage of outputs containing a landing stronger than evidence permits.</li>
+    <li><strong>False Closure Rate:</strong> Percentage of unresolved questions presented as settled.</li>
+    <li><strong>Speculation Leakage Rate:</strong> Percentage of speculative statements landing as findings.</li>
+    <li><strong>Analogy Inflation Rate:</strong> Percentage of analogies treated as evidence.</li>
+    <li><strong>Calibration Preservation:</strong> Whether the model remains helpful and decisive when evidence supports decisiveness.</li>
+    <li><strong>Repair Quality:</strong> Human rating of whether revised sentences preserve usefulness while correcting force.</li>
+    <li><strong>Recognition Accuracy:</strong> Human ability to identify landing class after exposure to stacks.</li>
+    <li><strong>Domain Safety Improvement:</strong> Reduction in harmful over-closure in medical, legal, financial, and reputational cases.</li>
+  </ul>
+  <h3>Minimal proof-bearing experiment</h3>
+  <div class="spec">1. Select one completion cell.
+2. Build a 100-sentence seed stack.
+3. Build 30 border sentences from adjacent cells.
+4. Ask readers to identify which new sentences belong with the stack.
+5. Do not give the cell name first.
+6. Measure recognition above chance.
+7. Ask readers to describe the felt commonality.
+8. Compare descriptions to predicted landing.
+9. Repeat with model-generated and human-written examples.
+10. Use disagreement to refine cell, examples, and names.</div>
+  <p>For the AI layer specifically, run two models on the same tasks: one with standard safety and helpfulness, one with landing inspection. Compare not only factual accuracy but whether the answers make claims, recommendations, and closures land at the right strength. The expected result is not less language. It is more lawful completion.</p>
+</section>
+
+<section id="governance">
+  <h2>12. Governance, limits, and refusal discipline</h2>
+  <p>The layer must not become a fake authority system. It cannot decide truth by naming landing. It cannot punish unusual speech merely because the landing is unfamiliar. It cannot classify human expression as if all meaning were reducible to cells. It must remain an instrument of inspection, not a judge of souls.</p>
+  <p>The most important governance rule is this: <strong>landing is not truth.</strong> A landing audit can say what a sentence makes stand. It cannot alone say whether what stands is real. It can reveal that an accusation has landed, but not by itself decide whether the accused is guilty. It can reveal that a policy statement lands as closure, but not by itself decide whether closure is justified. It can reveal that a model answer lands as proof, but external proof must still be supplied.</p>
+  <div class="danger callout">
+    <strong>Forbidden simplification:</strong> “This sentence lands; therefore it is right.” The correct form is: “This sentence lands in this way; now we can ask whether that landing is earned.”
+  </div>
+  <p>Refusal discipline also improves under this layer. A bad refusal lands as moral superiority, vague danger, or bureaucratic closure. A good refusal lands as a precise boundary. It says what cannot be done, why, and what safer adjacent help remains available. The refusal should not make the user land as bad unless the context truly requires moral warning. It should make the boundary stand, not inflate the user into the danger.</p>
+</section>
+
+<section id="prototype">
+  <h2>13. Prototype milestone</h2>
+  <p>The first responsible prototype should not be a universal product. It should be a proof-bearing object that demonstrates the layer on a narrow, visible task.</p>
+  <h3>Prototype: Landing Audit Workbench</h3>
+  <p>The workbench accepts a paragraph or model answer. It returns a sentence-by-sentence audit. For each sentence, it shows: landing plain, force, evidence basis, possible overreach, nearby rival landing, and repaired version. The user can toggle between silent repair and full diagnostic view. The first domain should be AI outputs about complex ideas, because that is where fluent unearned landing is easy to see and low enough risk for early experimentation.</p>
+  <h4>Minimum viable features</h4>
+  <ul>
+    <li>Paste text input.</li>
+    <li>Automatic segmentation into landing units.</li>
+    <li>Landing plain-language description.</li>
+    <li>Force rating: low, medium, high, absolute.</li>
+    <li>Evidence basis field.</li>
+    <li>Unearned landing flag.</li>
+    <li>Suggested repair.</li>
+    <li>Before/after comparison.</li>
+    <li>Exportable audit report.</li>
+  </ul>
+  <h4>First demonstration text</h4>
+  <p>The first public demo should use a language-model answer that is plausible, elegant, and subtly overreaching. The workbench should show exactly where the answer makes speculation land as discovery or resonance land as proof. Then it should repair the answer without killing its usefulness. The audience should feel the difference immediately: the second answer is not weaker; it is more answerable.</p>
+  <div class="callout success">
+    <strong>Prototype success criterion:</strong> A sceptical reader should be able to say, “I may not accept the whole theory, but I can see that this tool caught something real in the way the language landed.”
+  </div>
+</section>
+
+<section class="card">
+  <h2>Closing specification</h2>
+  <p>The AI Landing Inspection Layer is the missing conscience of fluent generation. It does not replace truth-testing, retrieval, citation, policy, or human judgement. It comes before and around them. It asks what language has already done before those systems finish their work.</p>
+  <p>Its fundamental contribution is to make the first event of AI language inspectable. The model does not merely output tokens. It makes things stand. It closes fields. It orients attention. It leaves remainders. It gives shape to what the user may believe, doubt, fear, trust, repeat, build, or remember.</p>
+  <p>When that shaping is uninspected, fluency becomes a danger. When it is inspected, fluency can become disciplined. The model can still speak powerfully, but it speaks with awareness of its own landing. It can still help, but it does not let helpfulness become false closure. It can still wonder, but it does not let wonder pretend to be proof. It can still produce beautiful sentences, but beauty is no longer allowed to hide entitlement.</p>
+  <p>The centre remains simple:</p>
+  <div class="callout">
+    <strong>A sentence can land without being true. Therefore, in any serious language system, the landing itself must become inspectable.</strong>
+  </div>
+  <p>That is the layer. That is the standard. That is the beginning of an AI that does not merely continue language, but becomes answerable for what its language makes stand.</p>
+</section>
+</article>
+<footer>The AI Landing Inspection Layer · Sentence Landing specification · Version 0.1</footer>
+</main>
+</body>
+</html>
